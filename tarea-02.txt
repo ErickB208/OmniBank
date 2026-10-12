@@ -1,0 +1,14 @@
+CLIENTES 1--------------------------N CUENTAS
+cliente_id (PK)                     cuenta_id (PK)
+nombre                              cliente_id (PK)
+apellido                            numero_cuenta
+correo                              tipo_cuenta
+telefono                            saldo
+
+CUENTAS 1--------------------------N TRANSACCIONES
+                                    transaccion_id 
+                                    cuenta_origen_id 
+                                    cuenta_destino_id 
+                                    monto 
+                                    fecha 
+                                    tipo_transaccion 
