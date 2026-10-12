@@ -1,0 +1,13 @@
+Tarea 1: Requerimientos No Funcionales de OmniBank
+
+1. NFR1 - Consistencia del saldo:
+
+La base de datos debe impedir que las cuentas bancarias tengan saldos negativos, evitando errores al registrar o modificar el dinero disponible.
+
+2. NFR2 - Eliminación de clientes (Soft Delete):
+
+La base de datos no debe permitir eliminar clientes definitivamente. Cuando un cliente cierre su cuenta, su información debe conservarse y marcarse como inactivo para futuras auditorías.
+
+3. NFR3 - Registro de actualizaciones (Timestamps):
+
+La base de datos debe guardar automáticamente la fecha y hora de la última modificación de cada cuenta bancaria, para saber cuándo se realizó el cambio.
