@@ -1,11 +1,16 @@
-CLIENTES  1--------------------N  CUENTAS
-cliente_id (PK)                 cuenta_id (PK)
-nombre, apellido                cliente_id (FK)
-correo, telefono                umero_cuenta, tipo_cuenta, saldo
+[Clientes] 1 ------------ N [Cuentas]
+- cliente_id (PK)             - cuenta_id (PK)
+- nombre                      - cliente_id (FK)
+- correo                      - moneda
+- telefono                    - tipo_cuenta
+- fecha_nacimiento            - saldo_actual
+- tax_id                      - limite_credito
 
-
-  CUENTA 1-------------------N TRANSACCIONES
-                             transaccion_id (PK)
-                             cuenta_origen_id (FK)
-                             cuenta_destino_id (FK)
-                             monto, fecha, tipo_transaccion
+                   (Cuenta Origen)
+[Cuentas] 1 ------------------------- N [Transacciones]
+                                          - transaccion_id (PK)
+                   (Cuenta Destino)       - from_account (FK -> Cuentas)
+[Cuentas] 1 ------------------------- N   - to_account (FK -> Cuentas)
+                                          - monto
+                                          - tipo_transaccion
+                                          - fecha_completada
