@@ -1,0 +1,28 @@
+1. Tabla Clientes
+Columna	Tipo de clave
+cliente_tax_id	(PK)
+cliente_nombre	
+cliente_correo	
+cliente_telefono
+
+2. Tabla Sucursales
+Columna	Tipo de clave
+sucursal_codigo	(PK)
+sucursal_direccion
+
+3. Tabla Cuentas
+Columna	Tipo de clave
+cuenta_numero	(PK)
+cliente_tax_id	(FK)
+sucursal_codigo	(FK)
+moneda	
+tipo_cuenta	
+saldo_actual	
+La FK cliente_tax_id se relaciona con Clientes, y sucursal_codigo se relaciona con Sucursales.
+
+4. Tabla Transacciones
+Columna	Tipo de clave
+transaccion_id	(PK)
+fecha_tx	
+cuenta_numero	(FK)
+monto_tx
