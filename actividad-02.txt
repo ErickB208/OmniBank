@@ -1,0 +1,11 @@
+CLIENTES  1--------------------N  CUENTAS
+cliente_id (PK)                 cuenta_id (PK)
+nombre, apellido                cliente_id (FK)
+correo, telefono                umero_cuenta, tipo_cuenta, saldo
+
+
+  CUENTA 1-------------------N TRANSACCIONES
+                             transaccion_id (PK)
+                             cuenta_origen_id (FK)
+                             cuenta_destino_id (FK)
+                             monto, fecha, tipo_transaccion
