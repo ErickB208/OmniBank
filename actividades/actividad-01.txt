@@ -1,27 +1,13 @@
-Actividad 1: Levantamiento de Requisitos de OmniBank
-
 1. Lista de Entidades:
 
 Clientes (Customers)
-
 Cuentas (Accounts)
-
 Transacciones (Transactions)
-
 2. Requerimientos Funcionales (RF):
 
-RF1: El sistema debe guardar los datos de cada cliente: nombre completo, correo electrónico, teléfono, fecha de nacimiento y Tax ID.
+RF1: El sistema debe almacenar de los Clientes: nombre, correo, teléfono, fecha de nacimiento y Tax ID.
+RF2: El sistema debe almacenar de las Cuentas: número de cuenta, moneda, tipo de cuenta, saldo actual y límite de crédito, y a qué cliente pertenecen.
+RF3: El sistema debe almacenar de las Transacciones: cuenta origen, cuenta destino, monto, tipo de transacción y fecha/hora exacta.
+3. Restricción de unicidad:
 
-RF2: El sistema debe registrar las cuentas de cada cliente, incluyendo número de cuenta, moneda, tipo de cuenta, saldo actual y límite de crédito.
-
-RF3: El sistema debe almacenar las transacciones con cuenta origen, cuenta destino, monto, tipo de transacción y fecha exacta.
-
-RF4: Un cliente puede tener varias cuentas bancarias.
-
-RF5: El sistema debe evitar que las cuentas tengan saldos negativos por errores.
-
-3. Restricción de Unicidad:
-
-El Tax ID de cada cliente debe ser único y no puede repetirse.
-
-El correo electrónico de cada cliente también debe ser único.
+El sistema no debe permitir que dos clientes tengan el mismo Tax ID o número de identificación fiscal (Debe ser UNIQUE).
