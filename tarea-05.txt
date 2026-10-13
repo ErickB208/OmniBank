@@ -1,0 +1,12 @@
+
+UPDATE core.customers
+SET is_active = false
+WHERE customer_id = 'UUID_DEL_CLIENTE';
+
+ALTER TABLE core.accounts
+ADD COLUMN IF NOT EXISTS status VARCHAR(20)
+DEFAULT 'ACTIVE';
+
+UPDATE core.accounts
+SET status = 'CLOSED'
+WHERE account_id = 'UUID_DE_LA_CUENTA';
