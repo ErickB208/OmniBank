@@ -1,0 +1,6 @@
+
+-- Instrucción estándar legítima ante un cierre bancario de un cliente comercial:
+UPDATE core.customers SET is_active = false WHERE customer_id = 'c13c7f99-...';
+
+-- Las cuentas asociadas cesan actividad cambiándose equivalentemente en la base:
+UPDATE core.accounts SET is_active = false, updated_at = CURRENT_TIMESTAMP WHERE customer_id = 'c13c7f99-...';
