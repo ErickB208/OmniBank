@@ -1,0 +1,19 @@
+
+CREATE DOMAIN monto_financiero AS NUMERIC(15,2)
+CHECK (VALUE >= 0.00);
+
+CREATE TABLE Clientes (
+    cliente_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    tax_id texto_obligatorio NOT NULL,
+    nombre_fiscal texto_obligatorio NOT NULL
+);
+
+CREATE TABLE Cuentas (
+    cuenta_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    saldo_actual monto_financiero NOT NULL
+);
+
+CREATE TABLE Transacciones (
+    transaccion_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    monto monto_financiero NOT NULL
+);
