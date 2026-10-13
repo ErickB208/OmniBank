@@ -1,68 +1,17 @@
-
-WITH metricas_movimientos AS (
-    -- Etapa 1: una fila por cuenta con movimientos
-    SELECT
-        t.account_id,
-        COUNT(*) AS total_eventos,
-        SUM(t.amount) FILTER (
-            WHERE t.amount > 0
-        ) AS volumen_bruto
-    FROM transactions AS t
-    GROUP BY t.account_id
-),
-cuentas_activas AS (
-    -- Etapa 2: conservar todas las cuentas activas
-    SELECT
-        a.account_id,
-        a.account_number,
-        a.customer_id,
-        a.currency,
-        COALESCE(m.total_eventos, 0) AS total_eventos,
-        COALESCE(m.volumen_bruto, 0) AS volumen_bruto
-    FROM accounts AS a
-    LEFT JOIN metricas_movimientos AS m
-        ON a.account_id = m.account_id
-    WHERE a.is_active = TRUE
-),
-reporte_titulares AS (
-    -- Etapa 3: agregar los datos del titular
-    SELECT
-        ca.account_id,
-        ca.account_number,
-        cu.name AS titular,
-        ca.currency,
-        ca.total_eventos,
-        ca.volumen_bruto,
-        CASE
-            WHEN ca.total_eventos = 0 THEN 'Sin actividad'
-            WHEN ca.total_eventos = 1 THEN 'Baja'
-            WHEN ca.total_eventos = 2 THEN 'Media'
-            ELSE 'Alta'
-        END AS banda_actividad
-    FROM cuentas_activas AS ca
-    INNER JOIN customers AS cu
-        ON ca.customer_id = cu.customer_id
+WITH movement AS (
+ SELECT account_id, COUNT(*) AS tx_count, SUM(amount) AS gross_volume
+ FROM core.transactions GROUP BY account_id
+), account_metrics AS (
+ SELECT a.account_id, a.account_number, a.currency, a.customer_id,
+        COALESCE(m.tx_count,0) AS tx_count,
+        COALESCE(m.gross_volume,0) AS gross_volume
+ FROM core.accounts a LEFT JOIN movement m USING (account_id)
+ WHERE a.is_active
 )
-SELECT
-    account_id,
-    account_number,
-    titular,
-    currency,
-    total_eventos,
-    volumen_bruto,
-    banda_actividad
-FROM reporte_titulares
-ORDER BY account_number;
-
--- Comprobar cuántas cuentas están activas
-SELECT COUNT(*) AS total_cuentas_activas
-FROM accounts
-WHERE is_active = TRUE;
-
--- Comprobar el volumen bruto de los movimientos
-SELECT
-    COALESCE(
-        SUM(amount) FILTER (WHERE amount > 0),
-        0
-    ) AS volumen_bruto_total
-FROM transactions;
+SELECT c.first_name, c.last_name, am.account_number, am.currency,
+       am.tx_count, am.gross_volume,
+       CASE WHEN am.tx_count = 0 THEN 'SIN MOVIMIENTOS' ELSE 'CON MOVIMIENTOS' END AS activity_band
+FROM account_metrics am JOIN core.customers c USING (customer_id)
+ORDER BY am.account_number;
+SELECT (SELECT COUNT(*) FROM core.accounts WHERE is_active) AS active_accounts,
+       (SELECT COALESCE(SUM(amount),0) FROM core.transactions) AS direct_gross_volume;
