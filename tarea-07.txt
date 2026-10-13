@@ -1,0 +1,24 @@
+
+-- Sincronización nocturna del pipeline KYC
+-- Se supone que el lote ya fue cargado en staging.kyc_customers.
+
+INSERT INTO core.customers (
+    full_name,
+    email,
+    phone,
+    tax_id,
+    credit_score
+)
+SELECT
+    full_name,
+    email,
+    phone,
+    tax_id,
+    credit_score
+FROM staging.kyc_customers
+
+ON CONFLICT (email)
+DO UPDATE SET
+    phone = EXCLUDED.phone,
+    tax_id = EXCLUDED.tax_id,
+    credit_score = EXCLUDED.credit_score;
