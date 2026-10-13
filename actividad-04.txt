@@ -1,0 +1,18 @@
+
+CREATE TYPE moneda_enum AS ENUM (
+    'USD',
+    'EUR',
+    'MXN'
+);
+
+CREATE TYPE tipo_cuenta_enum AS ENUM (
+    'CHECKING',
+    'SAVINGS',
+    'CREDIT'
+);
+
+CREATE TYPE tipo_movimiento_enum AS ENUM (
+    'DEPOSIT',
+    'WITHDRAWAL',
+    'TRANSFER'
+);
