@@ -1,0 +1,19 @@
+-- ETAPA 1: Inyección transaccional en caliente sin escaneo retrógrado de bloqueo inquebrantable
+-- Le informamos explícitamente a PostgreSQL la cláusula "NOT VALID"
+ALTER TABLE core.transactions 
+    ADD CONSTRAINT chk_transactions_description_valid 
+    CHECK (LENGTH(TRIM(description)) >= 5) NOT VALID;
+-- > ¡TERMINADO EN MENOS DE 10 MILISEGUNDOS!
+-- El motor inserta pacíficamente la nueva regla en los metadatos del catálogo en un parpadeo de tiempo, 
+-- aplicando instantáneamente la protección sobre CUALQUIER transaccionalidad NUEVA QUE LLEGUE EN EL FUTURO (INSERT/UPDATE)
+-- sin molestarse, escanear ni estorbar a las 75 millones de filas antiguas consolidadas y en sosiego en el disco.
+-- ETAPA 2: Validación Asíncrona Pasiva sin Caídas de Servicio ni bloqueos masivos
+-- En una sesión o mandato posterior (ideal para ventanas de bajamar operante, o inmediatamente después de la primera)
+ALTER TABLE core.transactions 
+    VALIDATE CONSTRAINT chk_transactions_description_valid;
+-- > ¡CERO CAÍDA TRANSACCIONAL PARA LOS CLIENTES NI CONGELAMIENTOS EN BANCA WEB!
+-- Al ejecutarse en su segunda fase con VALIDATE CONSTRAINT, PostgreSQL efectúa paulatinamente en segundo plano
+-- la inspección y escaneo y fiscalización gradual del histórico de los 75 millones de renglones anticuados.
+-- En este ciclo especial y genial de PostgreSQL, el motor SE ABSTIENE RÍGIDAMENTE Y RENUNCIA al terrible bloqueo AccessExclusiveLock;
+-- adopta únicamente un bloqueo muchísimo más ligero y amigable (ShareUpdateExclusiveLock), que PERMITE Y CONSENTIDA EN CONTINUIDAD
+-- Y EN REAL TIME LA EJECUCIÓN PACÍFICA DE SELECTS E INSERCIONES operativas de los millones de clientes y del mundo entero concurrente sin inyectar latencias ni cortes transaccionales al banco.
