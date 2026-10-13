@@ -1,18 +1,9 @@
 
-CREATE TYPE moneda_enum AS ENUM (
-    'USD',
-    'EUR',
-    'MXN'
-);
+-- Monedas admitidas
+CREATE TYPE core.tipo_moneda AS ENUM ('USD', 'EUR', 'MXN', 'GBP');
 
-CREATE TYPE tipo_cuenta_enum AS ENUM (
-    'CHECKING',
-    'SAVINGS',
-    'CREDIT'
-);
+-- Tipos de cuentas de clientes
+CREATE TYPE core.tipo_cuenta AS ENUM ('CHECKING', 'SAVINGS', 'CREDIT');
 
-CREATE TYPE tipo_movimiento_enum AS ENUM (
-    'DEPOSIT',
-    'WITHDRAWAL',
-    'TRANSFER'
-);
+-- Categorizaciones transaccionales permitidas
+CREATE TYPE core.tipo_transaccion AS ENUM ('DEPOSIT', 'WITHDRAWAL', 'TRANSFER');
