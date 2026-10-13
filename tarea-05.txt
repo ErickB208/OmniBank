@@ -1,12 +1,6 @@
 
-UPDATE core.customers
-SET is_active = false
-WHERE customer_id = 'UUID_DEL_CLIENTE';
+-- Instrucción estándar legítima ante un cierre bancario de un cliente comercial:
+UPDATE core.customers SET is_active = false WHERE customer_id = 'c13c7f99-...';
 
-ALTER TABLE core.accounts
-ADD COLUMN IF NOT EXISTS status VARCHAR(20)
-DEFAULT 'ACTIVE';
-
-UPDATE core.accounts
-SET status = 'CLOSED'
-WHERE account_id = 'UUID_DE_LA_CUENTA';
+-- Las cuentas asociadas cesan actividad cambiándose equivalentemente en la base:
+UPDATE core.accounts SET is_active = false, updated_at = CURRENT_TIMESTAMP WHERE customer_id = 'c13c7f99-...';
